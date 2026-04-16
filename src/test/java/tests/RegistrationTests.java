@@ -2,8 +2,11 @@ package tests;
 
 import com.github.javafaker.Faker;
 import io.restassured.http.ContentType;
+import models.lombok.RegistrationBodyLombokModel;
+import models.lombok.RegistrationResponseLombokModel;
 import models.pojo.RegistrationBodyPojoModel;
 import models.pojo.RegistrationResponsePojoModel;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -12,12 +15,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RegistrationTests {
 
+    String userName;
+    String password;
+
+    @BeforeEach
+    public void prepareTestData() {
+        Faker faker = new Faker();
+        userName = faker.internet().domainWord();
+        password = faker.internet().password(4, 6);
+    }
+
     @Test
     public void successfulRegistrationTest_BadPractice() {
-
-        Faker faker = new Faker();
-        String userName = faker.internet().domainWord();
-        String password = faker.internet().password(4, 6);
 
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
 
@@ -37,10 +46,6 @@ public class RegistrationTests {
     @Test
     public void successfulRegistrationTest() {
 
-        Faker faker = new Faker();
-        String userName = faker.internet().domainWord();
-        String password = faker.internet().password(4, 6);
-
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
 
         given()
@@ -58,10 +63,6 @@ public class RegistrationTests {
 
     @Test
     public void successfulRegistrationTest_withPojo() {
-
-        Faker faker = new Faker();
-        String userName = faker.internet().domainWord();
-        String password = faker.internet().password(4, 6);
 
         RegistrationBodyPojoModel data = new RegistrationBodyPojoModel();
         data.setUsername(userName);
@@ -86,11 +87,32 @@ public class RegistrationTests {
     }
 
     @Test
-    public void existingUserTest() {
+    public void successfulRegistrationTest_withLombok() {
 
-        Faker faker = new Faker();
-        String userName = faker.internet().domainWord();
-        String password = faker.internet().password(4, 6);
+        RegistrationBodyLombokModel data = new RegistrationBodyLombokModel();
+        data.setUsername(userName);
+        data.setPassword(password);
+
+//Constructor example
+//RegistrationBodyLombokModel data = new RegistrationBodyLombokModel(userName, password);
+
+        RegistrationResponseLombokModel registrationResponse = given()
+                .body(data)
+                .contentType(ContentType.JSON)
+                .when()
+                .log().all()
+                .post("https://book-club.qa.guru/api/v1/users/register/")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .extract()
+                .as(RegistrationResponseLombokModel.class);
+
+        assertEquals(userName, registrationResponse.getUsername());
+    }
+
+    @Test
+    public void existingUserTest() {
 
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
 
@@ -121,10 +143,6 @@ public class RegistrationTests {
     @Test
     public void negativeRegistrationTest415() {
 
-        Faker faker = new Faker();
-        String userName = faker.name().fullName();
-        String password = faker.internet().password(4, 6);
-
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
 
         given()
@@ -141,10 +159,6 @@ public class RegistrationTests {
 
     @Test
     public void jsonParseError() {
-
-        Faker faker = new Faker();
-        String userName = faker.name().fullName();
-        String password = faker.internet().password(4, 6);
 
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
 
@@ -164,10 +178,6 @@ public class RegistrationTests {
     @Test
     public void contentTypeError() {
 
-        Faker faker = new Faker();
-        String userName = faker.name().fullName();
-        String password = faker.internet().password(4, 6);
-
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
 
 
@@ -185,10 +195,6 @@ public class RegistrationTests {
 
     @Test
     public void invalidUserName() {
-
-        Faker faker = new Faker();
-        String userName = "Maxwell Kilback";
-        String password = faker.internet().password(4, 6);
 
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
 
