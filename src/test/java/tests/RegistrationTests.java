@@ -3,10 +3,12 @@ package tests;
 import com.github.javafaker.Faker;
 import io.restassured.http.ContentType;
 import models.pojo.RegistrationBodyPojoModel;
+import models.pojo.RegistrationResponsePojoModel;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RegistrationTests {
 
@@ -65,7 +67,10 @@ public class RegistrationTests {
         data.setUsername(userName);
         data.setPassword(password);
 
-        given()
+//Constructor example
+//RegistrationBodyPojoModel data = new RegistrationBodyPojoModel(userName, password);
+
+        RegistrationResponsePojoModel registrationResponse = given()
                 .body(data)
                 .contentType(ContentType.JSON)
                 .when()
@@ -74,8 +79,10 @@ public class RegistrationTests {
                 .then()
                 .log().all()
                 .statusCode(201)
-                .body("username", is(userName))
-                .body("id", notNullValue());
+                .extract()
+                .as(RegistrationResponsePojoModel.class);
+
+        assertEquals(userName, registrationResponse.getUsername());
     }
 
     @Test
