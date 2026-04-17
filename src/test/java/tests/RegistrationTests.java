@@ -6,6 +6,8 @@ import models.lombok.RegistrationBodyLombokModel;
 import models.lombok.RegistrationResponseLombokModel;
 import models.pojo.RegistrationBodyPojoModel;
 import models.pojo.RegistrationResponsePojoModel;
+import models.records.RegistrationBodyRecordsModel;
+import models.records.RegistrationResponseRecordsModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -109,6 +111,25 @@ public class RegistrationTests {
                 .as(RegistrationResponseLombokModel.class);
 
         assertEquals(userName, registrationResponse.getUsername());
+    }
+
+    @Test
+    public void successfulRegistrationTest_withRecords() {
+        RegistrationBodyRecordsModel data = new RegistrationBodyRecordsModel(userName, password);
+
+        RegistrationResponseRecordsModel registrationResponse = given()
+                .body(data)
+                .contentType(ContentType.JSON)
+                .when()
+                .log().all()
+                .post("https://book-club.qa.guru/api/v1/users/register/")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .extract()
+                .as(RegistrationResponseRecordsModel.class);
+
+        assertEquals(userName, registrationResponse.username());
     }
 
     @Test
