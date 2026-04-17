@@ -6,6 +6,7 @@ import models.lombok.RegistrationBodyLombokModel;
 import models.lombok.RegistrationResponseLombokModel;
 import models.pojo.RegistrationBodyPojoModel;
 import models.pojo.RegistrationResponsePojoModel;
+import models.records.ExistingUserResponseRecordsModel;
 import models.records.RegistrationBodyRecordsModel;
 import models.records.RegistrationResponseRecordsModel;
 import org.junit.jupiter.api.BeforeEach;
@@ -133,9 +134,9 @@ public class RegistrationTests {
     }
 
     @Test
-    public void existingUserTest() {
+    public void existingUserTest_withRecords() {
 
-        String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
+        RegistrationBodyRecordsModel data = new RegistrationBodyRecordsModel(userName, password);
 
         given()
                 .body(data)
@@ -149,7 +150,7 @@ public class RegistrationTests {
                 .body("username", is(userName))
                 .body("id", notNullValue());
 
-        given()
+        ExistingUserResponseRecordsModel response = given()
                 .body(data)
                 .contentType(ContentType.JSON)
                 .when()
@@ -158,7 +159,12 @@ public class RegistrationTests {
                 .then()
                 .log().all()
                 .statusCode(400)
-                .body("username[0]", is("A user with that username already exists."));
+                .extract()
+                .as(ExistingUserResponseRecordsModel.class);
+
+        String expectedError = ("A user with that username already exists.");
+        assertEquals(expectedError, response.username().get(0));
+//                .body("username[0]", is("A user with that username already exists."));
     }
 
     @Test
