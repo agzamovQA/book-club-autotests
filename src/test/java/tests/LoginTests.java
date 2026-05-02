@@ -9,6 +9,7 @@ import tests.testdata.TestData;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static specs.login.LoginSpec.*;
+import static tests.testdata.TestData.prefix_jwt;
 
 public class LoginTests extends TestBase {
 
@@ -25,7 +26,7 @@ public class LoginTests extends TestBase {
                 .spec(successfulLoginSpec)
                 .extract().as(LoginSuccessfulResponseModel.class);
 
-        String expectedTokenPath = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
+        String expectedTokenPath = prefix_jwt;
         String actualAccess = loginRsponse.access();
         String actualRefresh = loginRsponse.refresh();
 

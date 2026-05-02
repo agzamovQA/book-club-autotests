@@ -4,6 +4,7 @@ import io.restassured.http.ContentType;
 import models.registration.ExistingUserResponseModel;
 import models.registration.RegistrationBodyModel;
 import models.registration.SuccessfulRegistrationResponseModel;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tests.testdata.TestData;
 
@@ -15,9 +16,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RegistrationTests extends TestBase {
 
+    String randomUserName, randomUserPassword;
+
+    @BeforeEach
+    public void generateRandomData() {
+        randomUserName = TestData.returnRandomUsername();
+        randomUserPassword = TestData.returnRandomPassword();
+    }
+
     @Test
     public void successfulRegistrationTest() {
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(TestData.getRandomUserName, TestData.getRandomUserPassword);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(randomUserName, randomUserPassword);
 
         SuccessfulRegistrationResponseModel registrationResponse = given()
                 .body(registrationData)
@@ -37,7 +46,7 @@ public class RegistrationTests extends TestBase {
                 .as(SuccessfulRegistrationResponseModel.class);
 
         String actualUsername = registrationResponse.username();
-        assertThat(actualUsername).isEqualTo(TestData.getRandomUserName);
+        assertThat(actualUsername).isEqualTo(randomUserName);
         assertThat(registrationResponse.id()).isGreaterThan(0);
         assertThat(registrationResponse.firstName()).isEqualTo("");
         assertThat(registrationResponse.lastName()).isEqualTo("");
@@ -47,7 +56,7 @@ public class RegistrationTests extends TestBase {
     @Test
     public void existingUserTest() {
 
-        RegistrationBodyModel data = new RegistrationBodyModel(TestData.getRandomUserName, TestData.getRandomUserPassword);
+        RegistrationBodyModel data = new RegistrationBodyModel(randomUserName, randomUserPassword);
 
         given()
                 .body(data)
@@ -59,7 +68,7 @@ public class RegistrationTests extends TestBase {
                 .then()
                 .log().all()
                 .statusCode(201)
-                .body("username", is(TestData.getRandomUserName))
+                .body("username", is(randomUserName))
                 .body("id", notNullValue());
 
         ExistingUserResponseModel response = given()
