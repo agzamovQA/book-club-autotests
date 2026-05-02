@@ -13,6 +13,8 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static specs.login.LoginSpec.successfulLoginSpec;
+import static specs.registration.RegistrationSpec.*;
 
 public class RegistrationTests extends TestBase {
 
@@ -28,24 +30,17 @@ public class RegistrationTests extends TestBase {
     public void successfulRegistrationTest() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(randomUserName, randomUserPassword);
 
-        SuccessfulRegistrationResponseModel registrationResponse = given()
+        SuccessfulRegistrationResponseModel registrationResponse = given(registrationRequestSpec)
                 .body(registrationData)
-                .contentType(ContentType.JSON)
                 .when()
-                .log().all()
-                .basePath("/api/v1")
                 .post("/users/register/")
                 .then()
-                .log().all()
-                .statusCode(201)
-                .body(matchesJsonSchemaInClasspath("schemas/registration/registration_successful_response_schema.json"))
-                .body("id", notNullValue())
-                .body("username", notNullValue())
-                .body("remoteAddr", notNullValue())
+                .spec(successfulRegistrationSpec)
                 .extract()
                 .as(SuccessfulRegistrationResponseModel.class);
 
         String actualUsername = registrationResponse.username();
+
         assertThat(actualUsername).isEqualTo(randomUserName);
         assertThat(registrationResponse.id()).isGreaterThan(0);
         assertThat(registrationResponse.firstName()).isEqualTo("");
@@ -58,30 +53,20 @@ public class RegistrationTests extends TestBase {
 
         RegistrationBodyModel data = new RegistrationBodyModel(randomUserName, randomUserPassword);
 
-        given()
+        given(registrationRequestSpec)
                 .body(data)
-                .contentType(ContentType.JSON)
                 .when()
-                .log().all()
-                .basePath("/api/v1")
                 .post("/users/register/")
                 .then()
-                .log().all()
-                .statusCode(201)
-                .body("username", is(randomUserName))
-                .body("id", notNullValue());
+                .spec(successfulRegistrationSpec)
+                .body("username", is(randomUserName));
 
-        ExistingUserResponseModel response = given()
+        ExistingUserResponseModel response = given(registrationRequestSpec)
                 .body(data)
-                .contentType(ContentType.JSON)
                 .when()
-                .log().all()
-                .basePath("/api/v1")
                 .post("/users/register/")
                 .then()
-                .log().all()
-                .statusCode(400)
-                .body(matchesJsonSchemaInClasspath("schemas/registration/registration_unsuccessful_response_schema.json"))
+                .spec(existingRegistrationSpec)
                 .extract()
                 .as(ExistingUserResponseModel.class);
 
