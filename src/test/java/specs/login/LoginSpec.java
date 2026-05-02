@@ -33,4 +33,18 @@ public class LoginSpec {
                     "schemas/login/login_unsuccessful_schema.json"))
             .expectBody("detail", containsString("Invalid username or password."))
             .build();
+
+    public static ResponseSpecification loginWithoutUserNameSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(400)
+            .expectBody(matchesJsonSchemaInClasspath(
+                    "schemas/login/login_without_username_schema.json"))
+            .build();
+
+    public static ResponseSpecification loginWithoutPasswordSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(400)
+            .expectBody(matchesJsonSchemaInClasspath(
+                    "schemas/login/login_without_password_schema.json"))
+            .build();
 }

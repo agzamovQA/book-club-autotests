@@ -1,6 +1,5 @@
 package tests;
 
-import io.restassured.http.ContentType;
 import models.registration.ExistingUserResponseModel;
 import models.registration.RegistrationBodyModel;
 import models.registration.SuccessfulRegistrationResponseModel;
@@ -9,11 +8,9 @@ import org.junit.jupiter.api.Test;
 import tests.testdata.TestData;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static specs.login.LoginSpec.successfulLoginSpec;
 import static specs.registration.RegistrationSpec.*;
 
 public class RegistrationTests extends TestBase {
@@ -50,7 +47,6 @@ public class RegistrationTests extends TestBase {
 
     @Test
     public void existingUserTest() {
-
         RegistrationBodyModel data = new RegistrationBodyModel(randomUserName, randomUserPassword);
 
         given(registrationRequestSpec)
