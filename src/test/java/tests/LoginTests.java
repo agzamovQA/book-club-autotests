@@ -4,6 +4,7 @@ import models.login.LoginBodyModel;
 import models.login.LoginSuccessfulResponseModel;
 import models.login.LoginUnsuccessfulResponseModel;
 import org.junit.jupiter.api.Test;
+import tests.testdata.TestData;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -11,14 +12,10 @@ import static specs.login.LoginSpec.*;
 
 public class LoginTests extends TestBase {
 
-    String userName = "Agzamurai";
-    String password = "Qwer1234";
-    String wrongPassword = "Qwer4321";
-
     @Test
     public void successfulLoginTest() {
 
-        LoginBodyModel loginData = new LoginBodyModel(userName, password);
+        LoginBodyModel loginData = new LoginBodyModel(TestData.regularUserName, TestData.regularUserPassword);
 
         LoginSuccessfulResponseModel loginRsponse = given(loginRequestSpec)
                 .body(loginData)
@@ -40,7 +37,7 @@ public class LoginTests extends TestBase {
     @Test
     public void wrongPassword() {
 
-        LoginBodyModel loginData = new LoginBodyModel(userName, wrongPassword);
+        LoginBodyModel loginData = new LoginBodyModel(TestData.regularUserName, TestData.wrongPassword);
 
         LoginUnsuccessfulResponseModel loginResponse = given(loginRequestSpec)
                 .body(loginData)

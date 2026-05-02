@@ -1,12 +1,11 @@
 package tests;
 
-import com.github.javafaker.Faker;
 import io.restassured.http.ContentType;
 import models.registration.ExistingUserResponseModel;
 import models.registration.RegistrationBodyModel;
 import models.registration.SuccessfulRegistrationResponseModel;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tests.testdata.TestData;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
@@ -16,19 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RegistrationTests extends TestBase {
 
-    String userName;
-    String password;
-
-    @BeforeEach
-    public void prepareTestData() {
-        Faker faker = new Faker();
-        userName = faker.internet().domainWord();
-        password = faker.internet().password(4, 6);
-    }
-
     @Test
     public void successfulRegistrationTest() {
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(userName, password);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(TestData.getRandomUserName, TestData.getRandomUserPassword);
 
         SuccessfulRegistrationResponseModel registrationResponse = given()
                 .body(registrationData)
@@ -48,17 +37,17 @@ public class RegistrationTests extends TestBase {
                 .as(SuccessfulRegistrationResponseModel.class);
 
         String actualUsername = registrationResponse.username();
-        assertThat(actualUsername).isEqualTo(userName);
+        assertThat(actualUsername).isEqualTo(TestData.getRandomUserName);
         assertThat(registrationResponse.id()).isGreaterThan(0);
-        assertThat(registrationResponse.firstName()).isNull();
-        assertThat(registrationResponse.lastName()).isNull();
-        assertThat(registrationResponse.email()).isNull();
+        assertThat(registrationResponse.firstName()).isEqualTo("");
+        assertThat(registrationResponse.lastName()).isEqualTo("");
+        assertThat(registrationResponse.email()).isEqualTo("");
     }
 
     @Test
     public void existingUserTest() {
 
-        RegistrationBodyModel data = new RegistrationBodyModel(userName, password);
+        RegistrationBodyModel data = new RegistrationBodyModel(TestData.getRandomUserName, TestData.getRandomUserPassword);
 
         given()
                 .body(data)
@@ -70,7 +59,7 @@ public class RegistrationTests extends TestBase {
                 .then()
                 .log().all()
                 .statusCode(201)
-                .body("username", is(userName))
+                .body("username", is(TestData.getRandomUserName))
                 .body("id", notNullValue());
 
         ExistingUserResponseModel response = given()
