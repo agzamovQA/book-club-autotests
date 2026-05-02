@@ -1,4 +1,4 @@
-package models.registration.pojo;
+package models.registration.examples.pojo;
 
 public class RegistrationResponsePojoModel {
 
