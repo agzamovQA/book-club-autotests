@@ -1,4 +1,4 @@
-package tests;
+package tests.examples;
 
 import com.github.javafaker.Faker;
 import io.restassured.http.ContentType;
