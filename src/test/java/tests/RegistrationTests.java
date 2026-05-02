@@ -9,10 +9,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RegistrationTests {
+public class RegistrationTests extends TestBase {
 
     String userName;
     String password;
@@ -26,21 +28,31 @@ public class RegistrationTests {
 
     @Test
     public void successfulRegistrationTest() {
-        RegistrationBodyModel data = new RegistrationBodyModel(userName, password);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(userName, password);
 
         SuccessfulRegistrationResponseModel registrationResponse = given()
-                .body(data)
+                .body(registrationData)
                 .contentType(ContentType.JSON)
                 .when()
                 .log().all()
-                .post("https://book-club.qa.guru/api/v1/users/register/")
+                .basePath("/api/v1")
+                .post("/users/register/")
                 .then()
                 .log().all()
                 .statusCode(201)
+                .body(matchesJsonSchemaInClasspath("schemas/registration/registration_successful_response_schema.json"))
+                .body("id", notNullValue())
+                .body("username", notNullValue())
+                .body("remoteAddr", notNullValue())
                 .extract()
                 .as(SuccessfulRegistrationResponseModel.class);
 
-        assertEquals(userName, registrationResponse.username());
+        String actualUsername = registrationResponse.username();
+        assertThat(actualUsername).isEqualTo(userName);
+        assertThat(registrationResponse.id()).isGreaterThan(0);
+        assertThat(registrationResponse.firstName()).isNull();
+        assertThat(registrationResponse.lastName()).isNull();
+        assertThat(registrationResponse.email()).isNull();
     }
 
     @Test
@@ -53,7 +65,8 @@ public class RegistrationTests {
                 .contentType(ContentType.JSON)
                 .when()
                 .log().all()
-                .post("https://book-club.qa.guru/api/v1/users/register/")
+                .basePath("/api/v1")
+                .post("/users/register/")
                 .then()
                 .log().all()
                 .statusCode(201)
@@ -65,10 +78,12 @@ public class RegistrationTests {
                 .contentType(ContentType.JSON)
                 .when()
                 .log().all()
-                .post("https://book-club.qa.guru/api/v1/users/register/")
+                .basePath("/api/v1")
+                .post("/users/register/")
                 .then()
                 .log().all()
                 .statusCode(400)
+                .body(matchesJsonSchemaInClasspath("schemas/registration/registration_unsuccessful_response_schema.json"))
                 .extract()
                 .as(ExistingUserResponseModel.class);
 

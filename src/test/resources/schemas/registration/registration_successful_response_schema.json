@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "title": "registration_response_schema",
+  "description": "Auto generated JSON schema based on the 'registration_response_schema' file",
+  "properties": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "id": {
+      "type": "number"
+    },
+    "email": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "remoteAddr": {
+      "type": "string"
+    }
+  }
+}

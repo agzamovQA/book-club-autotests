@@ -10,6 +10,7 @@ import models.registration.examples.records.ExistingUserResponseRecordsModel;
 import models.registration.examples.records.RegistrationBodyRecordsModel;
 import models.registration.examples.records.RegistrationResponseRecordsModel;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -30,6 +31,7 @@ public class RegistrationTestsWithModelsExample {
     }
 
     @Test
+    @Disabled
     public void successfulRegistrationTest_BadPractice() {
 
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
@@ -48,6 +50,7 @@ public class RegistrationTestsWithModelsExample {
     }
 
     @Test
+    @Disabled
     public void successfulRegistrationTest() {
 
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
@@ -66,6 +69,7 @@ public class RegistrationTestsWithModelsExample {
     }
 
     @Test
+    @Disabled
     public void successfulRegistrationTest_withPojo() {
 
         RegistrationBodyPojoModel data = new RegistrationBodyPojoModel();
@@ -91,6 +95,7 @@ public class RegistrationTestsWithModelsExample {
     }
 
     @Test
+    @Disabled
     public void successfulRegistrationTest_withLombok() {
 
         RegistrationBodyLombokModel data = new RegistrationBodyLombokModel();
@@ -116,6 +121,7 @@ public class RegistrationTestsWithModelsExample {
     }
 
     @Test
+    @Disabled
     public void successfulRegistrationTest_withRecords() {
         RegistrationBodyRecordsModel data = new RegistrationBodyRecordsModel(userName, password);
 
@@ -135,6 +141,7 @@ public class RegistrationTestsWithModelsExample {
     }
 
     @Test
+    @Disabled
     public void existingUserTest_withRecords() {
 
         RegistrationBodyRecordsModel data = new RegistrationBodyRecordsModel(userName, password);
@@ -169,6 +176,7 @@ public class RegistrationTestsWithModelsExample {
     }
 
     @Test
+    @Disabled
     public void negativeRegistrationTest415() {
 
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
@@ -186,6 +194,7 @@ public class RegistrationTestsWithModelsExample {
     }
 
     @Test
+    @Disabled
     public void jsonParseError() {
 
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
@@ -204,6 +213,7 @@ public class RegistrationTestsWithModelsExample {
     }
 
     @Test
+    @Disabled
     public void contentTypeError() {
 
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";
@@ -222,6 +232,7 @@ public class RegistrationTestsWithModelsExample {
     }
 
     @Test
+    @Disabled
     public void invalidUserName() {
 
         String data = "{\"username\": \"" + userName + "\",\"password\":\"" + password + "\"}";

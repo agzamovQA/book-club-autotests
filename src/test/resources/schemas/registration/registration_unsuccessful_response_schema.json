@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "title": "registration_unsuccessful_response_schema",
+  "description": "Auto generated JSON schema based on the 'registration_unsuccessful_response_schema' file",
+  "properties": {
+    "username": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
