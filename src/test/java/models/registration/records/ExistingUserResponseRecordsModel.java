@@ -1,4 +1,4 @@
-package models.records;
+package models.registration.records;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;

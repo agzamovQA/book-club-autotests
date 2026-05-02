@@ -1,0 +1,74 @@
+package tests;
+
+import io.restassured.http.ContentType;
+import models.login.LoginBodyModel;
+import models.login.LoginSuccessfulResponseModel;
+import models.login.LoginUnsuccessfulResponseModel;
+import org.junit.jupiter.api.Test;
+
+import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.notNullValue;
+
+public class LoginTests extends TestBase {
+
+    String userName = "Agzamurai";
+    String password = "Qwer1234";
+    String wrongPassword = "Qwer4321";
+
+    @Test
+    public void successfulLoginTest() {
+
+        LoginBodyModel loginData = new LoginBodyModel(userName, password);
+
+        LoginSuccessfulResponseModel loginRsponse = given()
+                .body(loginData)
+                .contentType(ContentType.JSON)
+                .when()
+                .log().all()
+                .basePath("/api/v1")
+                .post("/auth/token/")
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("schemas/login_response_schema.json"))
+                .body("refresh", notNullValue())
+                .body("access", notNullValue())
+                .extract().as(LoginSuccessfulResponseModel.class);
+
+        String expectedTokenPath = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
+        String actualAccess = loginRsponse.access();
+        String actualRefresh = loginRsponse.refresh();
+
+        assertThat(actualAccess).startsWith(expectedTokenPath);
+        assertThat(actualRefresh).startsWith(expectedTokenPath);
+        assertThat(actualAccess).isNotEqualTo(actualRefresh);
+    }
+
+    @Test
+    public void wrongPassword() {
+
+        LoginBodyModel loginData = new LoginBodyModel(userName, wrongPassword);
+
+        LoginUnsuccessfulResponseModel loginResponse = given()
+                .body(loginData)
+                .contentType(ContentType.JSON)
+                .when()
+                .log().all()
+                .basePath("/api/v1")
+                .post("/auth/token/")
+                .then()
+                .log().all()
+                .statusCode(401)
+                .body(matchesJsonSchemaInClasspath("schemas/login_unsuccessful_schema.json"))
+                .body("detail", containsString("Invalid username or password."))
+                .extract().as(LoginUnsuccessfulResponseModel.class);
+
+        String expectedDetailError = "Invalid username or password.";
+        String actualDetailError = loginResponse.detail();
+
+        assertThat(actualDetailError).isEqualTo(expectedDetailError);
+    }
+}

@@ -1,6 +1,5 @@
-package models.lombok;
+package models.registration.lombok;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "title": "login_response_schema",
+  "description": "Auto generated JSON schema based on the 'login_response_schema' file",
+  "properties": {
+    "access": {
+      "type": "string"
+    },
+    "refresh": {
+      "type": "string"
+    }
+  }
+}

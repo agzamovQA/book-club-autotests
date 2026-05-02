@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "title": "login_unsuccessful_schema",
+  "description": "Auto generated JSON schema based on the 'login_unsuccessful_schema' file",
+  "properties": {
+    "detail": {
+      "type": "string"
+    }
+  }
+}
