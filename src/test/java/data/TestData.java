@@ -18,9 +18,15 @@ public class TestData {
         return faker.internet().password();
     }
 
-    public static String randomPassword = faker.internet().password();
-    public static String randomUsername = faker.name().username();
-    public static String randomEmail = faker.internet().emailAddress();
-    public static String randomFirstName = faker.name().firstName();
-    public static String randomLastName = faker.name().lastName();
+    public static String returnRandomEmail() {
+        return faker.internet().emailAddress();
+    }
+
+    public static String returnRandomFirstName() {
+        return faker.name().firstName();
+    }
+
+    public static String returnRandomLastName() {
+        return faker.name().lastName();
+    }
 }

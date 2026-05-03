@@ -28,10 +28,10 @@ public class PutUpdateUserTests extends TestBase {
     public void generateRandomData() {
         randomUserName = TestData.returnRandomUsername();
         randomUserPassword = TestData.returnRandomPassword();
-        newRandomUserName = TestData.randomUsername;
-        newRandomFirstName = TestData.randomFirstName;
-        newRandomLastName = TestData.randomLastName;
-        newRandomEmail = TestData.randomEmail;
+        newRandomUserName = TestData.returnRandomUsername();
+        newRandomFirstName = TestData.returnRandomFirstName();
+        newRandomLastName = TestData.returnRandomLastName();
+        newRandomEmail = TestData.returnRandomEmail();
     }
 
     @Test
@@ -77,4 +77,5 @@ public class PutUpdateUserTests extends TestBase {
         assertThat(putUpdateResponse.lastName()).isNotEqualTo(registrationResponse.lastName());
         assertThat(putUpdateResponse.email()).isNotEqualTo(registrationResponse.email());
     }
+
 }
