@@ -1,6 +1,7 @@
 package tests;
 
 import models.login.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tests.testdata.TestData;
 
@@ -9,14 +10,16 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static specs.login.LoginSpec.*;
 import static tests.testdata.TestData.prefix_jwt;
 
+@DisplayName("Проверка авторизации на стайте book-club")
 public class LoginTests extends TestBase {
 
     @Test
+    @DisplayName("Успешная авторизация")
     public void successfulLoginTest() {
 
         LoginBodyModel loginData = new LoginBodyModel(TestData.regularUserName, TestData.regularUserPassword);
 
-        LoginSuccessfulResponseModel loginRsponse = given(loginRequestSpec)
+        LoginSuccessfulResponseModel loginResponse = given(loginRequestSpec)
                 .body(loginData)
                 .when()
                 .post("/auth/token/")
@@ -25,8 +28,8 @@ public class LoginTests extends TestBase {
                 .extract().as(LoginSuccessfulResponseModel.class);
 
         String expectedTokenPath = prefix_jwt;
-        String actualAccess = loginRsponse.access();
-        String actualRefresh = loginRsponse.refresh();
+        String actualAccess = loginResponse.access();
+        String actualRefresh = loginResponse.refresh();
 
         assertThat(actualAccess).startsWith(expectedTokenPath);
         assertThat(actualRefresh).startsWith(expectedTokenPath);
@@ -34,17 +37,18 @@ public class LoginTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Авторизация с некорректным паролем")
     public void wrongPassword() {
 
         LoginBodyModel loginData = new LoginBodyModel(TestData.regularUserName, TestData.wrongPassword);
 
-        LoginUnsuccessfulResponseModel loginResponse = given(loginRequestSpec)
+        LoginWrongPasswordResponseModel loginResponse = given(loginRequestSpec)
                 .body(loginData)
                 .when()
                 .post("/auth/token/")
                 .then()
                 .spec(wrongLoginSpec)
-                .extract().as(LoginUnsuccessfulResponseModel.class);
+                .extract().as(LoginWrongPasswordResponseModel.class);
 
         String expectedDetailError = "Invalid username or password.";
         String actualDetailError = loginResponse.detail();
@@ -53,6 +57,7 @@ public class LoginTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Авторизация без Username")
     public void loginWithoutUserName() {
 
         LoginBodyModel loginData = new LoginBodyModel("", TestData.wrongPassword);
@@ -72,6 +77,7 @@ public class LoginTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Авторизация без Password")
     public void loginWithoutPassword() {
 
         LoginBodyModel loginData = new LoginBodyModel(TestData.regularUserName, "");

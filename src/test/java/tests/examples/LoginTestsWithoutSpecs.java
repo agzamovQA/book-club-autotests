@@ -3,7 +3,7 @@ package tests.examples;
 import io.restassured.http.ContentType;
 import models.login.LoginBodyModel;
 import models.login.LoginSuccessfulResponseModel;
-import models.login.LoginUnsuccessfulResponseModel;
+import models.login.LoginWrongPasswordResponseModel;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
@@ -56,7 +56,7 @@ public class LoginTestsWithoutSpecs extends TestBase {
 
         LoginBodyModel loginData = new LoginBodyModel(userName, wrongPassword);
 
-        LoginUnsuccessfulResponseModel loginResponse = given()
+        LoginWrongPasswordResponseModel loginResponse = given()
                 .body(loginData)
                 .contentType(ContentType.JSON)
                 .when()
@@ -68,7 +68,7 @@ public class LoginTestsWithoutSpecs extends TestBase {
                 .statusCode(401)
                 .body(matchesJsonSchemaInClasspath("schemas/login/login_unsuccessful_schema.json"))
                 .body("detail", containsString("Invalid username or password."))
-                .extract().as(LoginUnsuccessfulResponseModel.class);
+                .extract().as(LoginWrongPasswordResponseModel.class);
 
         String expectedDetailError = "Invalid username or password.";
         String actualDetailError = loginResponse.detail();

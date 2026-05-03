@@ -4,6 +4,7 @@ import models.registration.ExistingUserResponseModel;
 import models.registration.RegistrationBodyModel;
 import models.registration.SuccessfulRegistrationResponseModel;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tests.testdata.TestData;
 
@@ -13,6 +14,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.registration.RegistrationSpec.*;
 
+@DisplayName("Проверка регистрации на стайте book-club")
 public class RegistrationTests extends TestBase {
 
     String randomUserName, randomUserPassword;
@@ -24,6 +26,7 @@ public class RegistrationTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Успешная регистрация")
     public void successfulRegistrationTest() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(randomUserName, randomUserPassword);
 
@@ -46,6 +49,7 @@ public class RegistrationTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Повторная регистрация пользователя")
     public void existingUserTest() {
         RegistrationBodyModel data = new RegistrationBodyModel(randomUserName, randomUserPassword);
 
