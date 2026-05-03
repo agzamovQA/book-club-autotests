@@ -1,5 +1,7 @@
 package tests;
 
+import models.login.LoginWithoutPasswordResponseModel;
+import models.login.LoginWithoutUsernameResponseModel;
 import models.registration.ExistingUserResponseModel;
 import models.registration.RegistrationBodyModel;
 import models.registration.SuccessfulRegistrationResponseModel;
@@ -12,6 +14,7 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static specs.login.LoginSpec.*;
 import static specs.registration.RegistrationSpec.*;
 
 @DisplayName("Проверка регистрации на стайте book-club")
@@ -72,5 +75,43 @@ public class RegistrationTests extends TestBase {
 
         String expectedError = ("A user with that username already exists.");
         assertEquals(expectedError, response.username().get(0));
+    }
+
+    @Test
+    @DisplayName("Регистрация без Username")
+    public void registrationWithoutUsername() {
+        RegistrationBodyModel data = new RegistrationBodyModel("", randomUserPassword);
+
+        LoginWithoutUsernameResponseModel registrationResponse = given(registrationRequestSpec)
+                .body(data)
+                .when()
+                .post("/users/register/")
+                .then()
+                .spec(loginWithoutUserNameSpec)
+                .extract().as(LoginWithoutUsernameResponseModel.class);
+
+        String expectedUsernameError = "This field may not be blank.";
+        String actualDetailError = registrationResponse.username().get(0);
+
+        assertThat(actualDetailError).isEqualTo(expectedUsernameError);
+    }
+
+    @Test
+    @DisplayName("Регистрация без Password")
+    public void registrationWithoutPassword() {
+        RegistrationBodyModel data = new RegistrationBodyModel(randomUserName, "");
+
+        LoginWithoutPasswordResponseModel registrationResponse = given(registrationRequestSpec)
+                .body(data)
+                .when()
+                .post("/users/register/")
+                .then()
+                .spec(loginWithoutPasswordSpec)
+                .extract().as(LoginWithoutPasswordResponseModel.class);
+
+        String expectedUsernameError = "This field may not be blank.";
+        String actualDetailError = registrationResponse.password().get(0);
+
+        assertThat(actualDetailError).isEqualTo(expectedUsernameError);
     }
 }
