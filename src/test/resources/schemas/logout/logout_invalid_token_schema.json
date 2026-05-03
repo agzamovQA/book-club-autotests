@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "title": "logout_invalid_token_schema",
+  "description": "Auto generated JSON schema based on the 'logout_invalid_token_schema' file",
+  "properties": {
+    "code": {
+      "type": "string"
+    },
+    "detail": {
+      "type": "string"
+    }
+  }
+}

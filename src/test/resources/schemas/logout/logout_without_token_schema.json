@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "title": "logout_without_token_schema",
+  "description": "Auto generated JSON schema based on the 'logout_without_token_schema' file",
+  "properties": {
+    "refresh": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
