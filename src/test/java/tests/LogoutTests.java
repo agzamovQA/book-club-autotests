@@ -1,6 +1,7 @@
 package tests;
 
-import models.login.*;
+import models.login.request.LoginBodyModel;
+import models.login.response.LoginSuccessfulResponseModel;
 import models.logout.request.LogoutBodyModel;
 import models.logout.response.LogoutSuccessfulBodyModel;
 import models.logout.response.LogoutWithInvalidTokenBodyModel;

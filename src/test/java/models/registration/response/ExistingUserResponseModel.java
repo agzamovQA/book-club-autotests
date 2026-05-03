@@ -1,4 +1,4 @@
-package models.registration;
+package models.registration.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

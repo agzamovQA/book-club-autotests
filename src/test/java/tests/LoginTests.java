@@ -1,6 +1,10 @@
 package tests;
 
-import models.login.*;
+import models.login.request.LoginBodyModel;
+import models.login.response.LoginSuccessfulResponseModel;
+import models.login.response.LoginWithoutPasswordResponseModel;
+import models.login.response.LoginWithoutUsernameResponseModel;
+import models.login.response.LoginWrongPasswordResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tests.testdata.TestData;

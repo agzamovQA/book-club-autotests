@@ -1,4 +1,4 @@
-package models.login;
+package models.login.response;
 
 import java.util.List;
 

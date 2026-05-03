@@ -1,9 +1,9 @@
 package tests.examples;
 
 import io.restassured.http.ContentType;
-import models.login.LoginBodyModel;
-import models.login.LoginSuccessfulResponseModel;
-import models.login.LoginWrongPasswordResponseModel;
+import models.login.request.LoginBodyModel;
+import models.login.response.LoginSuccessfulResponseModel;
+import models.login.response.LoginWrongPasswordResponseModel;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;

@@ -1,10 +1,10 @@
 package tests;
 
-import models.login.LoginWithoutPasswordResponseModel;
-import models.login.LoginWithoutUsernameResponseModel;
-import models.registration.ExistingUserResponseModel;
-import models.registration.RegistrationBodyModel;
-import models.registration.SuccessfulRegistrationResponseModel;
+import models.login.response.LoginWithoutPasswordResponseModel;
+import models.login.response.LoginWithoutUsernameResponseModel;
+import models.registration.response.ExistingUserResponseModel;
+import models.registration.request.RegistrationBodyModel;
+import models.registration.response.SuccessfulRegistrationResponseModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
