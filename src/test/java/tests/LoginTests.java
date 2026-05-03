@@ -7,12 +7,12 @@ import models.login.response.LoginWithoutUsernameResponseModel;
 import models.login.response.LoginWrongPasswordResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import tests.testdata.TestData;
+import data.TestData;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static specs.login.LoginSpec.*;
-import static tests.testdata.TestData.prefix_jwt;
+import static data.TestData.prefix_jwt;
 
 @DisplayName("Проверка авторизации на стайте book-club")
 public class LoginTests extends TestBase {

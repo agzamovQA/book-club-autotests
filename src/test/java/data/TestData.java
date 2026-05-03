@@ -1,4 +1,4 @@
-package tests.testdata;
+package data;
 
 import com.github.javafaker.Faker;
 import java.util.Locale;
@@ -18,9 +18,9 @@ public class TestData {
         return faker.internet().password();
     }
 
-    public String randomPassword = faker.internet().password();
-    public String randomUsername = faker.name().username();
-    public String randomEmail = faker.internet().emailAddress();
-    public String randomFirstName = faker.name().firstName();
-    public String randomLastName = faker.name().lastName();
+    public static String randomPassword = faker.internet().password();
+    public static String randomUsername = faker.name().username();
+    public static String randomEmail = faker.internet().emailAddress();
+    public static String randomFirstName = faker.name().firstName();
+    public static String randomLastName = faker.name().lastName();
 }

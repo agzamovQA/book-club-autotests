@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "title": "put_update_user_successful",
+  "description": "Auto generated JSON schema based on the 'put_update_user_successful' file",
+  "properties": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "id": {
+      "type": "number"
+    },
+    "email": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "remoteAddr": {
+      "type": "string"
+    }
+  }
+}

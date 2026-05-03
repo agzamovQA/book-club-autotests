@@ -8,7 +8,7 @@ import models.logout.response.LogoutWithInvalidTokenBodyModel;
 import models.logout.response.LogoutWithoutTokenBodyModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import tests.testdata.TestData;
+import data.TestData;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
