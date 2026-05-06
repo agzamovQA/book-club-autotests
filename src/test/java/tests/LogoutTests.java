@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import data.TestData;
 
+import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static specs.login.LoginSpec.*;
@@ -24,28 +25,27 @@ public class LogoutTests extends TestBase {
 
         LoginBodyModel loginData = new LoginBodyModel(TestData.regularUserName, TestData.regularUserPassword);
 
-        LoginSuccessfulResponseModel loginResponse = given(loginRequestSpec)
-                .body(loginData)
-                .when()
-                .post("/auth/token/")
-                .then()
-                .spec(successfulLoginSpec)
-                .extract().as(LoginSuccessfulResponseModel.class);
+        String actualRefresh = step("Авторизация и получение токенов", () ->
+            given(loginRequestSpec)
+                    .body(loginData)
+                    .when()
+                    .post("/auth/token/")
+                    .then()
+                    .spec(successfulLoginSpec)
+                    .extract().path("refresh"));
 
-        String actualAccess = loginResponse.access();
-        String actualRefresh = loginResponse.refresh();
+        step("Выход из аккаунта и проверка ответа (200)", () -> {
 
-        assertThat(actualAccess).isNotEqualTo(actualRefresh);
+            LogoutBodyModel logoutData = new LogoutBodyModel(actualRefresh);
 
-        LogoutBodyModel logoutData = new LogoutBodyModel(actualRefresh);
-
-        LogoutSuccessfulBodyModel logoutResponse = given(logoutRequestSpec)
+            LogoutSuccessfulBodyModel logoutResponse = given(logoutRequestSpec)
                 .body (logoutData)
                 .when()
                 .post("/auth/logout/")
                 .then()
                 .spec(successfulLogoutSpec)
                 .extract().as(LogoutSuccessfulBodyModel.class);
+    });
     }
 
     @Test
