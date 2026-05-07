@@ -1,7 +1,6 @@
 package tests;
 
 import models.login.request.LoginBodyModel;
-import models.login.response.LoginSuccessfulResponseModel;
 import models.logout.request.LogoutBodyModel;
 import models.logout.response.LogoutSuccessfulBodyModel;
 import models.logout.response.LogoutWithInvalidTokenBodyModel;
@@ -54,37 +53,36 @@ public class LogoutTests extends TestBase {
 
         LoginBodyModel loginData = new LoginBodyModel(TestData.regularUserName, TestData.regularUserPassword);
 
-        LoginSuccessfulResponseModel loginResponse = given(loginRequestSpec)
-                .body(loginData)
-                .when()
-                .post("/auth/token/")
-                .then()
-                .spec(successfulLoginSpec)
-                .extract().as(LoginSuccessfulResponseModel.class);
+        String actualRefresh = step("Авторизация и получение токенов", () ->
+                given(loginRequestSpec)
+                        .body(loginData)
+                        .when()
+                        .post("/auth/token/")
+                        .then()
+                        .spec(successfulLoginSpec)
+                        .extract().path("refresh"));
 
-        String actualAccess = loginResponse.access();
-        String actualRefresh = loginResponse.refresh();
+        step("Попытка выхода с невалидным токеном -> Token is invalid", () -> {
 
-        assertThat(actualAccess).isNotEqualTo(actualRefresh);
+            LogoutBodyModel logoutData = new LogoutBodyModel(actualRefresh + 222);
 
-        LogoutBodyModel logoutData = new LogoutBodyModel(actualRefresh + 222);
+            LogoutWithInvalidTokenBodyModel logoutResponse = given(logoutRequestSpec)
+                    .body (logoutData)
+                    .when()
+                    .post("/auth/logout/")
+                    .then()
+                    .spec(invalidTokenLogoutSpec)
+                    .extract().as(LogoutWithInvalidTokenBodyModel.class);
 
-        LogoutWithInvalidTokenBodyModel logoutResponse = given(logoutRequestSpec)
-                .body (logoutData)
-                .when()
-                .post("/auth/logout/")
-                .then()
-                .spec(invalidTokenLogoutSpec)
-                .extract().as(LogoutWithInvalidTokenBodyModel.class);
+            String actualDetail = logoutResponse.detail();
+            String actualCode = logoutResponse.code();
 
-        String actualDetail = logoutResponse.detail();
-        String actualCode = logoutResponse.code();
+            String expectedDetail = "Token is invalid";
+            String expectedCode = "token_not_valid";
 
-        String expectedDetail = "Token is invalid";
-        String expectedCode = "token_not_valid";
-
-        assertThat(actualDetail).isEqualTo(expectedDetail);
-        assertThat(actualCode).isEqualTo(expectedCode);
+            assertThat(actualDetail).isEqualTo(expectedDetail);
+            assertThat(actualCode).isEqualTo(expectedCode);
+        });
     }
 
     @Test
@@ -93,22 +91,20 @@ public class LogoutTests extends TestBase {
 
         LoginBodyModel loginData = new LoginBodyModel(TestData.regularUserName, TestData.regularUserPassword);
 
-        LoginSuccessfulResponseModel loginResponse = given(loginRequestSpec)
-                .body(loginData)
-                .when()
-                .post("/auth/token/")
-                .then()
-                .spec(successfulLoginSpec)
-                .extract().as(LoginSuccessfulResponseModel.class);
-
-        String actualAccess = loginResponse.access();
-        String actualRefresh = loginResponse.refresh();
-
-        assertThat(actualAccess).isNotEqualTo(actualRefresh);
+        String actualRefresh = step("Авторизация и получение токенов", () ->
+                given(loginRequestSpec)
+                        .body(loginData)
+                        .when()
+                        .post("/auth/token/")
+                        .then()
+                        .spec(successfulLoginSpec)
+                        .extract().path("refresh"));
 
         LogoutBodyModel logoutData = new LogoutBodyModel("");
 
-        LogoutWithoutTokenBodyModel logoutResponse = given(logoutRequestSpec)
+        step("Попытка выхода с невалидным токеном -> This field may not be blank.", () -> {
+
+            LogoutWithoutTokenBodyModel logoutResponse = given(logoutRequestSpec)
                 .body (logoutData)
                 .when()
                 .post("/auth/logout/")
@@ -116,9 +112,9 @@ public class LogoutTests extends TestBase {
                 .spec(withoutTokenLogoutSpec)
                 .extract().as(LogoutWithoutTokenBodyModel.class);
 
-        String expectedUsernameError = "This field may not be blank.";
-        String actualDetailError = logoutResponse.refresh().get(0);
+            String expectedUsernameError = "This field may not be blank.";
+            String actualDetailError = logoutResponse.refresh().get(0);
 
-        assertThat(actualDetailError).isEqualTo(expectedUsernameError);
+            assertThat(actualDetailError).isEqualTo(expectedUsernameError);});
     }
 }
