@@ -1,20 +1,15 @@
 package specs.logout;
 
 import io.restassured.builder.ResponseSpecBuilder;
-import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-import static io.restassured.RestAssured.with;
 import static io.restassured.filter.log.LogDetail.ALL;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.notNullValue;
+import static specs.BaseSpec.baseRequestSpec;
 
 public class LogoutSpec {
-    public static RequestSpecification logoutRequestSpec = with()
-            .log().all()
-            .contentType(ContentType.JSON);
+    public static RequestSpecification logoutRequestSpec = baseRequestSpec;
 
     public static ResponseSpecification successfulLogoutSpec = new ResponseSpecBuilder()
             .log(ALL)
