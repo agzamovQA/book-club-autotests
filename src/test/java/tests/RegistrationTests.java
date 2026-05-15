@@ -42,13 +42,13 @@ public class RegistrationTests extends TestBase {
                 .extract()
                 .as(SuccessfulRegistrationResponseModel.class);
 
-        String actualUsername = registrationResponse.username();
+        String actualUsername = registrationResponse.getUsername();
 
         assertThat(actualUsername).isEqualTo(randomUserName);
-        assertThat(registrationResponse.id()).isGreaterThan(0);
-        assertThat(registrationResponse.firstName()).isEqualTo("");
-        assertThat(registrationResponse.lastName()).isEqualTo("");
-        assertThat(registrationResponse.email()).isEqualTo("");
+        assertThat(registrationResponse.getId()).isGreaterThan(0);
+        assertThat(registrationResponse.getFirstName()).isEqualTo("");
+        assertThat(registrationResponse.getLastName()).isEqualTo("");
+        assertThat(registrationResponse.getEmail()).isEqualTo("");
     }
 
     @Test
@@ -74,7 +74,7 @@ public class RegistrationTests extends TestBase {
                 .as(ExistingUserResponseModel.class);
 
         String expectedError = ("A user with that username already exists.");
-        assertEquals(expectedError, response.username().get(0));
+        assertEquals(expectedError, response.getUsername().get(0));
     }
 
     @Test
@@ -91,7 +91,7 @@ public class RegistrationTests extends TestBase {
                 .extract().as(LoginWithoutUsernameResponseModel.class);
 
         String expectedUsernameError = "This field may not be blank.";
-        String actualDetailError = registrationResponse.username().get(0);
+        String actualDetailError = registrationResponse.getUsername().get(0);
 
         assertThat(actualDetailError).isEqualTo(expectedUsernameError);
     }
@@ -110,7 +110,7 @@ public class RegistrationTests extends TestBase {
                 .extract().as(LoginWithoutPasswordResponseModel.class);
 
         String expectedUsernameError = "This field may not be blank.";
-        String actualDetailError = registrationResponse.password().get(0);
+        String actualDetailError = registrationResponse.getPassword().get(0);
 
         assertThat(actualDetailError).isEqualTo(expectedUsernameError);
     }

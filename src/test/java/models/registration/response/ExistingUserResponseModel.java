@@ -1,8 +1,16 @@
 package models.registration.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record ExistingUserResponseModel(List<String> username) { }
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ExistingUserResponseModel {
+    List<String> username;
+}

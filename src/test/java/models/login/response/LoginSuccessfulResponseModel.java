@@ -1,4 +1,13 @@
 package models.login.response;
 
-public record LoginSuccessfulResponseModel(String access, String refresh) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginSuccessfulResponseModel {
+        String access;
+        String refresh;
 }

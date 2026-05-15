@@ -58,7 +58,7 @@ public class PutUpdateUserTests extends TestBase {
                 .spec(successfulLoginSpec)
                 .extract().as(LoginSuccessfulResponseModel.class);
 
-        String accessToken = loginResponse.access();
+        String accessToken = loginResponse.getAccess();
 
         PutUpdateBodyModel updateData = new PutUpdateBodyModel(newRandomUserName,
                 newRandomFirstName, newRandomLastName, newRandomEmail);
@@ -72,10 +72,10 @@ public class PutUpdateUserTests extends TestBase {
                 .spec(successfulPutUpdateSpec)
                 .extract().as(PutUpdateSuccessfulResponseModel.class);
 
-        assertThat(putUpdateResponse.username()).isNotEqualTo(registrationResponse.username());
-        assertThat(putUpdateResponse.firstName()).isNotEqualTo(registrationResponse.firstName());
-        assertThat(putUpdateResponse.lastName()).isNotEqualTo(registrationResponse.lastName());
-        assertThat(putUpdateResponse.email()).isNotEqualTo(registrationResponse.email());
+        assertThat(putUpdateResponse.getUsername()).isNotEqualTo(registrationResponse.getUsername());
+        assertThat(putUpdateResponse.getFirstName()).isNotEqualTo(registrationResponse.getFirstName());
+        assertThat(putUpdateResponse.getLastName()).isNotEqualTo(registrationResponse.getLastName());
+        assertThat(putUpdateResponse.getEmail()).isNotEqualTo(registrationResponse.getEmail());
     }
 
 }

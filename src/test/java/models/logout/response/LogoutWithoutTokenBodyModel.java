@@ -1,6 +1,14 @@
 package models.logout.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
-public record LogoutWithoutTokenBodyModel(List<String> refresh) {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class LogoutWithoutTokenBodyModel {
+    List<String> refresh;
 }

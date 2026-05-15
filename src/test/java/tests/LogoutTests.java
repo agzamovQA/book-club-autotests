@@ -34,8 +34,8 @@ public class LogoutTests extends TestBase {
         LogoutBodyModel logoutData = new LogoutBodyModel(actualRefresh + 222);
         LogoutWithInvalidTokenBodyModel logoutResponse = api.auth.logoutWithInvalidToken(logoutData);
 
-            String actualDetail = logoutResponse.detail();
-            String actualCode = logoutResponse.code();
+            String actualDetail = logoutResponse.getDetail();
+            String actualCode = logoutResponse.getCode();
 
             String expectedDetail = "Token is invalid";
             String expectedCode = "token_not_valid";
@@ -55,7 +55,7 @@ public class LogoutTests extends TestBase {
         LogoutWithoutTokenBodyModel logoutResponse = api.auth.logoutWithoutToken(logoutData);
 
             String expectedUsernameError = "This field may not be blank.";
-            String actualDetailError = logoutResponse.refresh().get(0);
+            String actualDetailError = logoutResponse.getRefresh().get(0);
 
             assertThat(actualDetailError).isEqualTo(expectedUsernameError);
     }

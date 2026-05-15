@@ -1,4 +1,12 @@
 package models.logout.request;
 
-public record LogoutBodyModel(String refresh) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class LogoutBodyModel {
+    String refresh;
 }

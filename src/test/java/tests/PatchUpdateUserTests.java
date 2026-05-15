@@ -59,7 +59,7 @@ public class PatchUpdateUserTests extends TestBase {
                 .spec(successfulLoginSpec)
                 .extract().as(LoginSuccessfulResponseModel.class);
 
-        String accessToken = loginResponse.access();
+        String accessToken = loginResponse.getAccess();
 
         PatchUpdateBodyModel updateData = new PatchUpdateBodyModel(newRandomUserName,
                 newRandomFirstName, "", newRandomEmail);
@@ -73,10 +73,10 @@ public class PatchUpdateUserTests extends TestBase {
                 .spec(successfulPatchUpdateSpec)
                 .extract().as(PatchUpdateSuccessfulResponseModel.class);
 
-        assertThat(patchUpdateResponse.username()).isNotEqualTo(registrationResponse.username());
-        assertThat(patchUpdateResponse.firstName()).isNotEqualTo(registrationResponse.firstName());
-        assertThat(patchUpdateResponse.lastName()).isEqualTo(registrationResponse.lastName());
-        assertThat(patchUpdateResponse.email()).isNotEqualTo(registrationResponse.email());
+        assertThat(patchUpdateResponse.getUsername()).isNotEqualTo(registrationResponse.getUsername());
+        assertThat(patchUpdateResponse.getFirstName()).isNotEqualTo(registrationResponse.getFirstName());
+        assertThat(patchUpdateResponse.getLastName()).isEqualTo(registrationResponse.getLastName());
+        assertThat(patchUpdateResponse.getEmail()).isNotEqualTo(registrationResponse.getEmail());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class PatchUpdateUserTests extends TestBase {
                 .spec(successfulLoginSpec)
                 .extract().as(LoginSuccessfulResponseModel.class);
 
-        String accessToken = loginResponse.access();
+        String accessToken = loginResponse.getAccess();
 
         PatchUpdateBodyModel updateData = new PatchUpdateBodyModel(newRandomUserName,
                 newRandomFirstName, newRandomLastName, newRandomEmail);
@@ -117,9 +117,9 @@ public class PatchUpdateUserTests extends TestBase {
                 .spec(successfulPatchUpdateSpec)
                 .extract().as(PatchUpdateSuccessfulResponseModel.class);
 
-        assertThat(patchUpdateResponse.username()).isNotEqualTo(registrationResponse.username());
-        assertThat(patchUpdateResponse.firstName()).isNotEqualTo(registrationResponse.firstName());
-        assertThat(patchUpdateResponse.lastName()).isNotEqualTo(registrationResponse.lastName());
-        assertThat(patchUpdateResponse.email()).isNotEqualTo(registrationResponse.email());
+        assertThat(patchUpdateResponse.getUsername()).isNotEqualTo(registrationResponse.getUsername());
+        assertThat(patchUpdateResponse.getFirstName()).isNotEqualTo(registrationResponse.getFirstName());
+        assertThat(patchUpdateResponse.getLastName()).isNotEqualTo(registrationResponse.getLastName());
+        assertThat(patchUpdateResponse.getEmail()).isNotEqualTo(registrationResponse.getEmail());
     }
 }

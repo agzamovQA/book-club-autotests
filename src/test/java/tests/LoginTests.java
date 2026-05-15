@@ -12,7 +12,6 @@ import data.TestData;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static specs.login.LoginSpec.*;
-import static data.TestData.prefix_jwt;
 
 @DisplayName("Проверка авторизации на стайте book-club")
 public class LoginTests extends TestBase {
@@ -31,9 +30,9 @@ public class LoginTests extends TestBase {
                 .spec(successfulLoginSpec)
                 .extract().as(LoginSuccessfulResponseModel.class);
 
-        String expectedTokenPath = prefix_jwt;
-        String actualAccess = loginResponse.access();
-        String actualRefresh = loginResponse.refresh();
+        String expectedTokenPath = TestData.prefix_jwt;
+        String actualAccess = loginResponse.getAccess();
+        String actualRefresh = loginResponse.getRefresh();
 
         assertThat(actualAccess).startsWith(expectedTokenPath);
         assertThat(actualRefresh).startsWith(expectedTokenPath);
@@ -55,7 +54,7 @@ public class LoginTests extends TestBase {
                 .extract().as(LoginWrongPasswordResponseModel.class);
 
         String expectedDetailError = "Invalid username or password.";
-        String actualDetailError = loginResponse.detail();
+        String actualDetailError = loginResponse.getDetail();
 
         assertThat(actualDetailError).isEqualTo(expectedDetailError);
     }
@@ -75,7 +74,7 @@ public class LoginTests extends TestBase {
                 .extract().as(LoginWithoutUsernameResponseModel.class);
 
         String expectedUsernameError = "This field may not be blank.";
-        String actualDetailError = loginResponse.username().get(0);
+        String actualDetailError = loginResponse.getUsername().get(0);
 
         assertThat(actualDetailError).isEqualTo(expectedUsernameError);
     }
@@ -95,7 +94,7 @@ public class LoginTests extends TestBase {
                 .extract().as(LoginWithoutPasswordResponseModel.class);
 
         String expectedUsernameError = "This field may not be blank.";
-        String actualDetailError = loginResponse.password().get(0);
+        String actualDetailError = loginResponse.getPassword().get(0);
 
         assertThat(actualDetailError).isEqualTo(expectedUsernameError);
     }

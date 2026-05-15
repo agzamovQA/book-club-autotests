@@ -1,4 +1,10 @@
 package models.logout.response;
 
-public record LogoutSuccessfulBodyModel() {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+public class LogoutSuccessfulBodyModel {
 }

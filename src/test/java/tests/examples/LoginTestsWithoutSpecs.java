@@ -22,7 +22,7 @@ public class LoginTestsWithoutSpecs extends TestBase {
 
     @Test
     @Disabled
-    public void successfulLoginTest() {
+    public void successfulLoginTest1() {
 
         LoginBodyModel loginData = new LoginBodyModel(userName, password);
 
@@ -42,8 +42,8 @@ public class LoginTestsWithoutSpecs extends TestBase {
                 .extract().as(LoginSuccessfulResponseModel.class);
 
         String expectedTokenPath = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
-        String actualAccess = loginRsponse.access();
-        String actualRefresh = loginRsponse.refresh();
+        String actualAccess = loginRsponse.getAccess();
+        String actualRefresh = loginRsponse.getRefresh();
 
         assertThat(actualAccess).startsWith(expectedTokenPath);
         assertThat(actualRefresh).startsWith(expectedTokenPath);
@@ -71,7 +71,7 @@ public class LoginTestsWithoutSpecs extends TestBase {
                 .extract().as(LoginWrongPasswordResponseModel.class);
 
         String expectedDetailError = "Invalid username or password.";
-        String actualDetailError = loginResponse.detail();
+        String actualDetailError = loginResponse.getDetail();
 
         assertThat(actualDetailError).isEqualTo(expectedDetailError);
     }

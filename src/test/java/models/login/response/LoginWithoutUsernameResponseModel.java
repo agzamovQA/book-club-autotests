@@ -1,5 +1,14 @@
 package models.login.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
-public record LoginWithoutUsernameResponseModel(List<String> username) {}
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginWithoutUsernameResponseModel {
+    List<String> username;
+}

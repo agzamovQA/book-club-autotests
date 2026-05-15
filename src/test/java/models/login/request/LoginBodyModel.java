@@ -1,5 +1,13 @@
 package models.login.request;
 
-public record LoginBodyModel(String username,
-                             String password) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginBodyModel {
+    String username;
+    String password;
 }
